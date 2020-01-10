@@ -1,25 +1,39 @@
 public class SnakeLadderGame {
-    public static void main(String[] args){
-        final int noOfSnakes = 6;
-        final int noOfLadders = 6;
-        Grid grid = new Grid(noOfSnakes,noOfLadders);
-        Player player1 = new Player("Praveen",grid);
-        Player player2 = new Player("Naveen",grid);
-        while (true) {
-            player1.play();
-            if (player1.reachedGoal()) {
-                break;
-            }
-            player2.play();
-            if (player2.reachedGoal()) {
-                break;
-            }
+    private static final Dice DICE = new Dice();
+    private Grid grid;
+    private Player player1;
+    private Player player2;
+
+    public SnakeLadderGame(int numberOfSnakes, int numberOfLadders, String player1Name, String player2Name) {
+        grid = new Grid(numberOfSnakes, numberOfLadders);
+        player1 = new Player(player1Name);
+        player2 = new Player(player2Name);
+    }
+
+    public void launchGame() {
+        Player currentPlayer = player1;
+        while (!grid.isGameCompleted(player1.getPosition(), player2.getPosition())) {
+            int diceValue = currentPlayer.play(DICE);
+            int position = grid.getUpdatedPosition(currentPlayer.getPosition(), diceValue);
+            currentPlayer.setPosition(position);
+            System.out.println(currentPlayer.getName()+"'s current Position: "+currentPlayer.getPosition());
+            currentPlayer = switchPlayer(player1 , player2, currentPlayer);
         }
-        if (player1.reachedGoal()) {
-            System.out.println("Winner is "+player1.getName());
+    }
+
+    private Player switchPlayer(Player player1, Player player2, Player currentPlayer) {
+        if (currentPlayer.equals(player1)) {
+            return player2;
+        } else {
+            return player1;
         }
-        else if (player2.reachedGoal()) {
-            System.out.println("Winner is "+player2.getName());
-        }
+    }
+
+    public static void main(String[] args) {
+        final int numberOfSnakes = 6;
+        final int numberOfLadders = 6;
+        final String player1Name = "Praveen";
+        final String player2Name = "Naveen";
+        new SnakeLadderGame(numberOfSnakes, numberOfLadders, player1Name, player2Name).launchGame();
     }
 }

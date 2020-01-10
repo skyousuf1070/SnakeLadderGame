@@ -1,53 +1,39 @@
 import java.util.Scanner;
 
 public class Player {
+    private static final int STARTING_POSITION = 0;
     private String name;
     private Position position;
-    private final Grid grid;
-    private static final Dice DICE = new Dice();
-    private static final Scanner SCANNER = new Scanner(System.in);
 
-    public Player(String name, Grid grid) {
+    public Player(String name) {
         this.name = name;
-        this.position = new Position(0);
-        this.grid = grid;
+        this.position = new Position(STARTING_POSITION);
     }
 
-    public Player(Grid grid) {
+    public Player() {
         this.name = "Yousuf";
-        this.position = new Position(0);
-        this.grid = grid;
+        this.position = new Position(STARTING_POSITION);
     }
 
-    public void play() {
-        System.out.println("\n\nCurrent Position: " + position);
+    public int play(Dice DICE) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\n\n" + name + "'s Current Position: " + position.getPosition());
         System.out.print("Press Enter to roll a Dice! ");
-        SCANNER.nextLine();
+        scanner.nextLine();
         int diceValue = DICE.roll();
-        System.out.println("Dice Value "+diceValue);
-        int currentPosition = position.getPosition() + diceValue;
-        Snake snake = grid.isGridHasSnake(currentPosition);
-        if (snake != null) {
-            position = new Position(snake.getTailPosition());
-        }
-        Ladder ladder = grid.isGridHasLadder(currentPosition);
-        if (ladder != null) {
-            position = new Position(ladder.getEndPosition());
-        }
-        if (ladder == null && snake == null) {
-            position = (position.getPosition() + diceValue) > 100 ? position : new Position(position.getPosition() + diceValue);
-        }
-        System.out.println("After Rolling Position is: " + position.getPosition());
-    }
-
-    public boolean reachedGoal() {
-        if (position.getPosition() != 100) {
-            return false;
-        }
-        return true;
+        System.out.println("Dice Value: " + diceValue);
+        return diceValue;
     }
 
     public String getName() {
         return name;
+    }
+
+    public int getPosition() {
+        return position.getPosition();
+    }
+
+    public void setPosition(int position) {
+        this.position = new Position(position);
     }
 }
