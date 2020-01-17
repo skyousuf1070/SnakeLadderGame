@@ -10,18 +10,18 @@ public class SnakeLadderGame {
         player2 = new Player(player2Name);
     }
 
-    public void launchGame() {
+    public void play() {
         Player currentPlayer = player1;
         while (!grid.isGameCompleted(player1.getPosition(), player2.getPosition())) {
             int diceValue = currentPlayer.play(DICE);
-            int position = grid.getUpdatedPosition(currentPlayer.getPosition(), diceValue);
+            Position position = grid.getUpdatedPosition(currentPlayer.getPosition(), diceValue);
             currentPlayer.setPosition(position);
-            System.out.println(currentPlayer.getName()+"'s current Position: "+currentPlayer.getPosition());
-            currentPlayer = switchPlayer(player1 , player2, currentPlayer);
+            System.out.println(currentPlayer.getName() + "'s current Position: " + currentPlayer.getPosition().getPosition());
+            currentPlayer = switchPlayer(currentPlayer);
         }
     }
 
-    private Player switchPlayer(Player player1, Player player2, Player currentPlayer) {
+    private Player switchPlayer(Player currentPlayer) {
         if (currentPlayer.equals(player1)) {
             return player2;
         } else {
@@ -32,8 +32,8 @@ public class SnakeLadderGame {
     public static void main(String[] args) {
         final int numberOfSnakes = 6;
         final int numberOfLadders = 6;
-        final String player1Name = "Praveen";
+        final String player1Name = "Yousuf";
         final String player2Name = "Naveen";
-        new SnakeLadderGame(numberOfSnakes, numberOfLadders, player1Name, player2Name).launchGame();
+        new SnakeLadderGame(numberOfSnakes, numberOfLadders, player1Name, player2Name).play();
     }
 }

@@ -37,30 +37,25 @@ public class Grid {
         return null;
     }
 
-    public int getUpdatedPosition(int position, int diceValue) {
+    public Position getUpdatedPosition(Position position, int diceValue) {
         final int target = 100;
-        int updatedPosition = -1;
-        Snake snake = getSnake(position + diceValue);
+        int updatedPosition = position.getPosition() + diceValue;
+        Snake snake = getSnake(updatedPosition);
         if (snake != null) {
-            updatedPosition = new Position(snake.getTailPosition()).getPosition();
+            updatedPosition = snake.getTailPosition();
         }
-        Ladder ladder = getLadder(position + diceValue);
+        Ladder ladder = getLadder(updatedPosition);
         if (ladder != null) {
-            updatedPosition = new Position(ladder.getEndPosition()).getPosition();
+            updatedPosition = ladder.getEndPosition();
         }
-        if (ladder == null && snake == null) {
-            if ((position + diceValue) <= target) {
-                updatedPosition = new Position(position + diceValue).getPosition();
-            }
-        }
-//        System.out.println("Position: "+player.getPosition());
-//        System.out.println("After Rolling " + player.getName() + "'s Position is: " + player.getPosition());
-        return updatedPosition;
+        updatedPosition = updatedPosition > target ? position.getPosition() : updatedPosition;
+        position.setPosition(updatedPosition);
+        return position;
     }
 
-    public boolean isGameCompleted(int player1Position, int player2Position) {
+    public boolean isGameCompleted(Position player1Position, Position player2Position) {
         final int target = 100;
-        if (player1Position == target || player2Position == target) {
+        if (player1Position.getPosition() == target || player2Position.getPosition() == target) {
             return true;
         }
         return false;

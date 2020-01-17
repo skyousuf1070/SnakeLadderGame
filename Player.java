@@ -10,14 +10,9 @@ public class Player {
         this.position = new Position(STARTING_POSITION);
     }
 
-    public Player() {
-        this.name = "Yousuf";
-        this.position = new Position(STARTING_POSITION);
-    }
-
     public int play(Dice DICE) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\n\n" + name + "'s Current Position: " + position.getPosition());
+        System.out.println("\n\n" + name + "'s Previous Position: " + position.getPosition());
         System.out.print("Press Enter to roll a Dice! ");
         scanner.nextLine();
         int diceValue = DICE.roll();
@@ -29,11 +24,11 @@ public class Player {
         return name;
     }
 
-    public int getPosition() {
-        return position.getPosition();
+    public Position getPosition() {
+        return position;
     }
 
-    public void setPosition(int position) {
-        this.position = new Position(position);
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }
